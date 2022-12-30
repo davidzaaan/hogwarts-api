@@ -5,17 +5,6 @@ app = FastAPI()
 CACHE: dict = {}
 
 
-@app.on_event("startup")
-async def startup_event():
-    print("""
-        ###
-        ###
-         ##   ##
-         ##  ##
-          ####
-    """)
-
-
 @app.get("/")
 async def index():
     """
@@ -86,12 +75,14 @@ async def characters_all(
         CACHE["characters"] = characters_data()
 
     if character_name:
-        from utils.data import get_character, get_characters_listname
-        CHARS_LIST: list = get_characters_listname()
-        character = get_character(character_name, CHARS_LIST)
+        from utils.data import get_character
+        character = get_character(character_name)
         
-        if not character:
+        if character is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Character was not found")
+        elif character is False:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Too many characters with the name given, can you be more specific?")
+
 
         return character
 

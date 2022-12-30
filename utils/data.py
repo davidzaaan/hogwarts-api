@@ -1,5 +1,6 @@
 from pandas import DataFrame, read_csv
 import numpy as np
+import re
 
 
 def movies_data() -> dict:
@@ -30,6 +31,9 @@ def get_characters_dataframe() -> DataFrame:
         },
         inplace=True
     )
+
+    characters_df["Name"] = characters_df["Name"].str.title()
+
     # Switching the index to start in 1
     characters_df.index = np.arange(1, len(characters_df) + 1)
 
@@ -93,26 +97,48 @@ def spells_data() -> dict:
     return spells_df.to_dict(orient='index')
 
 
-def get_character(name: str, list_of_names: list) -> str | None:
+def get_character(name: str) -> dict | None | bool:
         """
             Function that returns a JSON object with the character `name` given
 
             ### Params
                 `name[str]`: The name of the character to look for\n
-                `list_of_names[list]`: The list of all the names existing in the characters DataFrame 
+            
+            ### Return
+                `dict`: Will return a JSON (or Python dictionary) if a character was found
+                `None`: Will return `None` if no character was found
+                `False`: Will return `False` if there is more than one character with the name given
         """
-        name = name.strip().title()
-        if name in list_of_names:
-            character: dict = CHARACTERS_DF.loc[CHARACTERS_DF["Name"] == name]
-            return character.to_dict(orient='records')[0]
+        name: str = name.strip().title()
+        names_filtered: str = filter_names(name)
+
+        # names lookup
+        name_regex = re.findall(r"{}[A-Za-z-']*\s?[A-Za-z-']*\s?[A-Za-z-']*\s?[A-Za-z-']*".format(name), names_filtered, re.I)
+
+        if name_regex:
+            if not len(name_regex) > 1:
+                # get the character from the DataFrame
+                character = CHARACTERS_DF.loc[CHARACTERS_DF["Name"] == name_regex[0]]
+
+                # orient='records' returns a list, so access the only ocurrence
+                return character.to_dict(orient='records')[0]
+            
+            return False
         
         return None
 
 
-# Keep in mind
-def filter_names(name: str, list_of_names: list) -> list:
+def filter_names(name: str) -> str:
     """
-        ## Logic pending for this function...
+        Function that will return only names that match with the first 3 letters of the name given
+        in the form of a string of comma separated names
+
+        ### Params
+            `name[str]`: Name to evaluate and filter
     """
-    names_filtered: list = list(filter(lambda char_name: char_name.lower().startswith(name[0]), list_of_names))
-    return names_filtered
+
+    # filter names from the characters DataFramewho match with the first 3 letters with the name given
+    names_filter: list = CHARACTERS_DF["Name"].str.startswith(name[:3], na=False)
+
+    # return comma separated names to evaluate with regex
+    return ",".join(CHARACTERS_DF.loc[names_filter, "Name"].to_list())
