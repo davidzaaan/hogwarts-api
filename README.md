@@ -61,7 +61,7 @@ $ virtualenv env
 Once you have installed and activated successfully your environment you should have a folder structure like the following.
 
 ```
-klener/
+hogwarts-api/
     env/
     data/
     utils/
@@ -123,21 +123,21 @@ This route will return you an array of `JSON` objects or Python dictionaries `di
 
 ### Routes
 
-`/characters/` -> Return all characters
+`/characters/` -> Return all characters.
 
-If any `Query` param is given, it will return the data related with the `name` of the character
+If any `Query` param is given, it will return the data related with the `name` of the character.
 
 *Example*
 
 `/characters?name=harry potter` -> This will return the data related to **Harry Potter**
 
-### Constraints with the `name` parameter
+### Constraints with the `Query` parameter `name` 
 
-`name` is of type `str`
+`name` is of type `str`.
 
-`name` length must be greater or equal to 3
+`name` length must be greater or equal to 3.
 
-`name` length must be less than or equal to 50
+`name` length must be less than or equal to 50.
 
 **Note:** The character lookup algorithm is greedy, so if you type for example:
 
@@ -156,11 +156,11 @@ or if the complete name is given
 `/characters?name=harry potter`
 
 ### Return codes:
-`200` Request was successful and it retrieved all the data
+`200` Request was successful and it retrieved all the data.
 
-`404` No characters were found with the `Query` param `name` given
+`404` No characters were found with the `Query` param `name` given.
 
-`409` It will return this code if the `Query` param with the `name` given has more than one match
+`409` It will return this code if the `Query` param with the `name` given has more than one match.
 
 ## Spells
 
@@ -168,18 +168,18 @@ This route will return you a `JSON` object or Python dictionary `dict` containin
 
 ### Routes
 
-`/spells/` -> Will return a dictionary will all the spells data
+`/spells/` -> Will return a dictionary will all the spells data.
 
 `/spells/{spell_id}` -> Will return the specific data from a certain spell such as its *Incantation* and type of spell.
 
 ### Constraints with the `spell_id` parameter
 
-`spell_id` must be a positive integer `int`
+`spell_id` must be a positive integer `int`.
 
 ### Return codes:
-`200` Request was successful and it retrieved certain either spell data or all the spells
+`200` Request was successful and it retrieved certain either spell data or all the spells.
 
-`404` No spells were found with the `Path` param `spell_id` given
+`404` No spells were found with the `Path` param `spell_id` given.
 
 ## Places
 
@@ -193,12 +193,12 @@ This route will return you a `JSON` object or Python dictionary `dict` containin
 
 ### Constraints with the `place_id` parameter
 
-`place_id` must be a positive integer `int`
+`place_id` must be a positive integer `int`.
 
 ### Return codes:
-`200` Request was successful and it retrieved certain either place data or all the places
+`200` Request was successful and it retrieved certain either place data or all the places.
 
-`404` No places were found with the `Path` param `place_id` given
+`404` No places were found with the `Path` param `place_id` given.
 
 ## Movies
 
@@ -210,14 +210,14 @@ This route will return you a `JSON` object or Python dictionary `dict` containin
 
 `/movies/{movie_id}` -> Will return the specific data from a certain movie.
 
-### Constraints with the `place_id` parameter
+### Constraints with the `movie_id` parameter
 
-`movie_id` must be a positive integer `int`
+`movie_id` must be a positive integer `int`.
 
 ### Return codes:
-`200` Request was successful and it retrieved either certain movie data or all the movies data
+`200` Request was successful and it retrieved either certain movie data or all the movies data.
 
-`404` No movies were found with the `Path` param `movie_id` given
+`404` No movies were found with the `Path` param `movie_id` given.
 
 ## Authors
 
