@@ -81,7 +81,7 @@ async def characters_all(
         if character is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Character was not found")
         elif character is False:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Too many characters with the name given, can you be more specific?")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Too many characters with the name given, can you be more specific?")
 
 
         return character
