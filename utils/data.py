@@ -3,28 +3,16 @@ import numpy as np
 import re
 
 
-def movies_data() -> dict:
-    """
-        #### Function that loads the movies DataFrame and format it
-    """
-    # DF loading...
-    # Movies DataFrame and cleaning
-    MOVIES_DF: DataFrame = read_csv("data/movies.csv", converters={
-        "Budget": str.strip,
-        "Box Office": str.strip
-        })
-    # Switching the index to start in 1
-    MOVIES_DF.index = np.arange(1, len(MOVIES_DF) + 1)
-
-    return MOVIES_DF.to_dict(orient='index')
-
-
 def get_characters_dataframe() -> DataFrame:
     """
         #### Function that loads and returns the characters DataFrame
     """
     # Characters DataFrame and Cleaning
-    characters_df = read_csv("data/characters.csv", converters={"Descr": str.strip})
+    characters_df = read_csv("data/characters.csv", converters={"Descr": str.strip, "Name": str.title})
+
+    # Switching the index to start in 1
+    characters_df.index = np.arange(1, len(characters_df) + 1)
+
     characters_df.fillna(value={
         "Gender": "Unknown", 
         "Descr": "This character does not have a description"
@@ -32,10 +20,6 @@ def get_characters_dataframe() -> DataFrame:
         inplace=True
     )
 
-    characters_df["Name"] = characters_df["Name"].str.title()
-
-    # Switching the index to start in 1
-    characters_df.index = np.arange(1, len(characters_df) + 1)
 
     return characters_df
 
@@ -65,11 +49,20 @@ def characters_data() -> dict:
     return CHARACTERS_DF.to_dict(orient='records')
 
 
-def get_characters_listname() -> list:
+def movies_data() -> dict:
     """
-        #### Function that returns the `Name` column in the characters DataFrame in the form of a Python's list
+        #### Function that loads the movies DataFrame and format it
     """
-    return CHARACTERS_DF["Name"].to_list()
+    # DF loading...
+    # Movies DataFrame and cleaning
+    MOVIES_DF: DataFrame = read_csv("data/movies.csv", converters={
+        "Budget": str.strip,
+        "Box Office": str.strip
+        })
+    # Switching the index to start in 1
+    MOVIES_DF.index = np.arange(1, len(MOVIES_DF) + 1)
+
+    return MOVIES_DF.to_dict(orient='index')
 
 
 def places_data() -> dict:
