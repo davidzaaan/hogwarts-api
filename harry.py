@@ -1,4 +1,11 @@
 from fastapi import FastAPI, HTTPException, status, Query, Path
+from utils.data import (
+    movies_data,
+    characters_data,
+    get_character,
+    places_data,
+    spells_data
+)
 
 app = FastAPI()
 
@@ -19,7 +26,6 @@ async def movies_all():
         #### Function that returns all movies data
     """
     if not "movies" in CACHE:
-        from utils.data import movies_data
         CACHE["movies"] = movies_data()
         
     return CACHE["movies"]
@@ -41,7 +47,6 @@ async def get_movie_by_id(
             `movie_id[int]`: Movie ID to get the data from
     """
     if not "movies" in CACHE:
-        from utils.data import movies_data
         CACHE["movies"] = movies_data()
 
     try:
@@ -51,7 +56,7 @@ async def get_movie_by_id(
 
 
 @app.get("/characters/")
-async def characters_all(
+async def characters(
         character_name: str | None = Query(
             default=None,
             min_length=3,
@@ -71,11 +76,9 @@ async def characters_all(
             `/characters?name=[str]` will JSON object with the character data
     """
     if not "characters" in CACHE:
-        from utils.data import characters_data
         CACHE["characters"] = characters_data()
 
     if character_name:
-        from utils.data import get_character
         character = get_character(character_name)
         
         if character is None:
@@ -95,7 +98,6 @@ async def places_all():
         #### Function that returns all places data
     """
     if not "places" in CACHE:
-        from utils.data import places_data
         CACHE["places"] = places_data()
 
     return CACHE["places"]
@@ -116,7 +118,6 @@ async def get_place_by_id(
             `place_id[int]`: Movie ID to get the data from
     """
     if not "places" in CACHE:
-        from utils.data import places_data
         CACHE["places"] = places_data()
 
     try:
@@ -131,7 +132,6 @@ async def spells_all():
         #### Function that returns all spells data
     """
     if not "spells" in CACHE:
-        from utils.data import spells_data
         CACHE["spells"] = spells_data()
 
     return CACHE["spells"]
@@ -152,7 +152,6 @@ async def get_spell_by_id(
             `spell_id[int]`: Spell ID to get the data from
     """
     if not "spells" in CACHE:
-        from utils.data import spells_data
         CACHE["spells"] = spells_data()
 
     try:

@@ -3,30 +3,6 @@ import numpy as np
 import re
 
 
-def get_characters_dataframe() -> DataFrame:
-    """
-        #### Function that loads and returns the characters DataFrame
-    """
-    # Characters DataFrame and Cleaning
-    characters_df = read_csv("data/characters.csv", converters={"Descr": str.strip, "Name": str.title})
-
-    # Switching the index to start in 1
-    characters_df.index = np.arange(1, len(characters_df) + 1)
-
-    characters_df.fillna(value={
-        "Gender": "Unknown", 
-        "Descr": "This character does not have a description"
-        },
-        inplace=True
-    )
-
-
-    return characters_df
-
-# Loading the DataFrame globally to use across functions that requires it
-CHARACTERS_DF = get_characters_dataframe()
-
-
 def characters_data() -> dict:
     """
         Function that formats the characters DataFrame into the form of a Python list of dictionaries
@@ -46,6 +22,20 @@ def characters_data() -> dict:
         }]
         ```
     """
+    # Characters DataFrame and Cleaning
+    global CHARACTERS_DF
+    CHARACTERS_DF = read_csv("data/characters.csv", converters={"Descr": str.strip, "Name": str.title})
+
+    # Switching the index to start in 1
+    CHARACTERS_DF.index = np.arange(1, len(CHARACTERS_DF) + 1)
+
+    CHARACTERS_DF.fillna(value={
+        "Gender": "Unknown", 
+        "Descr": "This character does not have a description"
+        },
+        inplace=True
+    )
+
     return CHARACTERS_DF.to_dict(orient='records')
 
 
