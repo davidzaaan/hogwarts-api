@@ -45,14 +45,14 @@ def movies_data() -> dict:
     """
     # DF loading...
     # Movies DataFrame and cleaning
-    MOVIES_DF: DataFrame = read_csv("data/movies.csv", converters={
+    movies_df: DataFrame = read_csv("data/movies.csv", converters={
         "Budget": str.strip,
         "Box Office": str.strip
         })
     # Switching the index to start in 1
-    MOVIES_DF.index = np.arange(1, len(MOVIES_DF) + 1)
+    movies_df.index = np.arange(1, len(movies_df) + 1)
 
-    return MOVIES_DF.to_dict(orient='index')
+    return movies_df.to_dict(orient='index')
 
 
 def places_data() -> dict:
